@@ -1,4 +1,111 @@
 PET Image Analysis Pipeline (Lung Cancer Dataset)
+
+📌 Overview
+
+Medical imaging plays a critical role in modern oncology, particularly in assessing tumor metabolism and treatment response. Positron Emission Tomography (PET) scans provide rich functional information, but transforming raw imaging data into actionable insights requires a structured and reproducible workflow.
+
+In this project, I developed an end-to-end PET image analysis pipeline using a public lung cancer dataset. The goal was to simulate a realistic clinical and research environment, where imaging data is processed, validated, and analyzed to extract meaningful quantitative biomarkers.
+
+Starting from raw DICOM images, the pipeline performs preprocessing, quality control, segmentation of high-uptake regions, and quantitative analysis of tumor characteristics. The final outputs include both visualizations and structured data that could support downstream tasks such as statistical analysis or machine learning.
+
+This project is designed to reflect workflows commonly used in oncology research and clinical trials, providing a practical demonstration of how medical imaging data can be translated into measurable insights.
+
+
+
+🗂️ Dataset
+Source: Public dataset from The Cancer Imaging Archive (TCIA)
+Modality: PET/CT (image-only subset used in this project)
+Domain: Lung cancer imaging
+Included Cancer Types:
+Adenocarcinoma
+Small Cell Carcinoma
+Large Cell Carcinoma
+Squamous Cell Carcinoma
+
+⚙️ Pipeline Overview
+1. Data Ingestion & Handling
+Loaded DICOM images using MONAI
+Preserved spatial structure and metadata
+Applied random sampling for efficient experimentation
+2. Preprocessing
+Intensity normalization (scaled to [0, 1])
+Channel formatting using MONAI transforms
+Resampling to a consistent resolution (simulated)
+Noise reduction via Gaussian filtering
+3. Quality Control (QC)
+
+Automated validation steps to ensure data reliability:
+Slice count verification
+Intensity distribution checks
+Detection of corrupted or low-signal scans
+
+4. Segmentation (ROI Extraction)
+Threshold-based segmentation of high-uptake regions
+Binary mask generation for lesion areas
+Overlay visualization for qualitative validation
+5. Quantitative Analysis
+
+Extraction of clinically relevant imaging biomarkers:
+
+Lesion volume (voxel-based → mL approximation)
+Mean uptake (SUV-like approximation)
+Maximum uptake
+Standard deviation (tumor heterogeneity indicator)
+
+6. Visualization
+2D slice overlays using Matplotlib
+Interactive 3D exploration with Napari
+Heatmaps highlighting metabolic activity
+
+7. Data Structuring
+Exported results to CSV format
+Created a structured dataset suitable for:
+Statistical analysis
+Machine learning workflows
+
+
+📊 Example Outputs
+Segmentation Overlay
+
+(Insert your saved image here)
+
+![Segmentation](images/segmentation.png)
+Quantitative Metrics (per scan)
+Lesion volume
+Mean uptake
+Maximum uptake
+🛠️ Technical Stack
+Python
+MONAI (medical imaging framework)
+NumPy
+Matplotlib
+Napari
+🏥 Clinical Relevance
+
+This pipeline reflects key components of PET imaging workflows commonly used in:
+
+Clinical trials
+Oncology imaging studies
+Drug development and treatment evaluation
+
+Note: Advanced steps such as attenuation correction, scatter correction, and image reconstruction are typically handled by scanner vendor software and are conceptually represented in this project.
+
+🚀 Future Improvements
+Deep learning–based segmentation (e.g., MONAI U-Net)
+Radiomics feature extraction
+Multi-modal PET/CT registration
+Automated reporting pipeline
+
+👤 Author
+Marcin Szczepański
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
 Overview
 
 This project demonstrates a full pipeline for PET image analysis, including preprocessing, segmentation, quantitative analysis, and visualization. The goal is to simulate a clinical/research workflow similar to those used in PET-based clinical trials and drug development.
