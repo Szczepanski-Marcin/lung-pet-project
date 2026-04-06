@@ -1,6 +1,6 @@
-# 🧠 PET Image Classification for Lung Cancer Subtypes
+# PET Image Classification for Lung Cancer Subtypes
 
-## 📌 Project Overview
+## Project Overview
 
 This project explores **lung cancer subtype classification using PET scan data**. The goal is to extract meaningful **radiomics-inspired features** from medical images and train a machine learning model to distinguish between cancer types.
 
@@ -11,9 +11,7 @@ The pipeline demonstrates:
 - Machine learning classification  
 - Model evaluation using clinically relevant metrics  
 
----
-
-## 📊 Dataset
+## Dataset
 
 - Source: Lung Cancer PET/CT dataset (DICOM format)  
 - Classes:
@@ -24,16 +22,14 @@ The pipeline demonstrates:
 
 - Total samples: ~18,500 slices  
 
-> ⚠️ **Important limitations**
+>  **Important limitations**
 > - No tumor segmentation masks available  
 > - No patient-level identifiers (possible data leakage)  
 > - Slice-level classification instead of patient-level analysis  
 
----
+## Methodology
 
-## ⚙️ Methodology
-
-### 🔹 1. Data Loading & Preprocessing
+### 1. Data Loading & Preprocessing
 
 - DICOM images loaded using `pydicom`  
 - Pixel intensities normalized to [0, 1]  
@@ -41,31 +37,31 @@ The pipeline demonstrates:
 
 ---
 
-### 🔹 2. Feature Extraction
+### 2. Feature Extraction
 
 Each image is represented using three groups of features:
 
-#### 🟦 Intensity Features
+#### Intensity Features
 - Mean intensity  
 - Standard deviation  
 - Maximum intensity  
 - 10th and 90th percentiles  
 
-#### 🟩 Texture Features (GLCM)
+#### Texture Features (GLCM)
 - Contrast  
 - Homogeneity  
 - Energy  
 
 These features capture spatial intensity patterns in the image.
 
-#### 🟨 Shape Proxy
+#### Shape Proxy
 - Approximate “high-intensity region volume” using percentile thresholding  
 
-> ⚠️ This is a **proxy feature**, not true tumor segmentation.
+> This is a **proxy feature**, not true tumor segmentation.
 
 ---
 
-### 🔹 3. Model Training
+### 3. Model Training
 
 - Model: **Random Forest Classifier**
 - Parameters:
@@ -78,26 +74,26 @@ These features capture spatial intensity patterns in the image.
 
 ---
 
-## 📈 Results
+## Results
 
-### 🔹 Cross-Validation Performance
+### Cross-Validation Performance
 
 CV Scores: [0.794, 0.788, 0.789, 0.801, 0.799]
 Mean CV: 0.794
 
 ---
 
-### 🔹 Classification Report
-                     precision    recall  f1-score   support
+### Classification Report
+                      precision    recall   f1-score   support
 
-Adenocarcinoma 0.81 0.95 0.87 2000
-Large Cell Carcinoma 0.73 0.33 0.46 100
-Small Cell Carcinoma 0.82 0.59 0.69 600
-Squamous Cell Carcinoma 0.80 0.69 0.74 1000
+Adenocarcinoma             0.81      0.95       0.87      2000
+Large Cell Carcinoma       0.73      0.33       0.46       100
+Small Cell Carcinoma       0.82      0.59       0.69       600
+Squamous Cell Carcinoma    0.80      0.69       0.74      1000
 
-accuracy 0.81 3700
-macro avg 0.79 0.64 0.69
-weighted avg 0.81 0.81 0.80
+accuracy                                        0.81      3700
+macro avg                  0.79       0.64      0.69      3700
+weighted avg               0.81       0.81      0.80      3700
 
 
 ---
