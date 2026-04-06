@@ -22,10 +22,10 @@ The pipeline demonstrates:
 
 - Total samples: ~18,500 slices  
 
->  **Important limitations**
-> - No tumor segmentation masks available  
-> - No patient-level identifiers (possible data leakage)  
-> - Slice-level classification instead of patient-level analysis  
+  **Important limitations**
+ - No tumor segmentation masks available  
+ - No patient-level identifiers (possible data leakage)  
+ - Slice-level classification instead of patient-level analysis  
 
 ## Methodology
 
@@ -56,7 +56,7 @@ These features capture spatial intensity patterns in the image.
 #### Shape Proxy
 - Approximate “high-intensity region volume” using percentile thresholding  
 
-> This is a **proxy feature**, not true tumor segmentation.
+ This is a **proxy feature**, not true tumor segmentation.
 
 
 ### 3. Model Training
@@ -81,8 +81,6 @@ CV Scores: [0.794, 0.788, 0.789, 0.801, 0.799]
 Mean CV: 0.794
 
 
-
-
 ```
 Classification Report
                      precision    recall  f1-score   support
@@ -92,39 +90,36 @@ Large Cell Carcinoma     0.78      0.39      0.52       100
 Small Cell Carcinoma     0.82      0.62      0.70       600
 Squamous Cell Carcinoma  0.81      0.70      0.75      1000
 
-accuracy                                    0.81      3700
-macro avg               0.81      0.66      0.71      3700
-weighted avg            0.81      0.81      0.81      3700
+accuracy                                     0.81      3700
+macro avg                0.81      0.66      0.71      3700
+weighted avg             0.81      0.81      0.81      3700
 ```
 
 
-## 📊 Visualizations
+## Visualizations
 
-### 🔹 Confusion Matrix
+### Confusion Matrix
 
 ![Confusion Matrix](images/confusion_matrix.png)
 
 *Figure: Model performance across cancer subtypes.*
 
----
 
-### 🔹 ROC Curves
+### ROC Curves
 
 ![ROC Curve](images/roc_curve.png)
 
 *Figure: ROC curves showing class-wise separability.*
 
----
 
-### 🔹 Feature Importance
+### Feature Importance
 
 ![Feature Importance](images/feature_importance.png)
 
 *Figure: Most influential features used by the model.*
 
----
 
-### 🔹 Sample PET Slices
+### Sample PET Slices
 
 <p align="center">
   <img src="images/sample_0.png" width="30%">
@@ -134,30 +129,27 @@ weighted avg            0.81      0.81      0.81      3700
 
 *Figure: Example PET slices from the dataset.*
 
-> Note: No ROI overlays are shown to avoid misleading interpretation.
+ Note: No ROI overlays are shown to avoid misleading interpretation.
 
----
 
-## 🧠 Key Insights
+## Key Insights
 
 - The model achieves **~81% accuracy**, indicating that radiomics-style features contain predictive signal  
 - Strong performance for **Adenocarcinoma**, weaker for **Large Cell Carcinoma** due to class imbalance  
 - Texture and intensity features are the most informative  
 
----
 
 ## ⚠️ Limitations
 
 This project highlights real-world challenges in medical imaging:
 
-- ❌ No tumor segmentation masks → no true ROI-based features  
-- ❌ Slice-level splitting → potential data leakage  
-- ❌ Class imbalance impacts minority classes  
-- ❌ PET intensities not standardized (no SUV normalization)  
+-  No tumor segmentation masks → no true ROI-based features  
+-  Slice-level splitting → potential data leakage  
+-  Class imbalance impacts minority classes  
+-  PET intensities not standardized (no SUV normalization)  
 
----
 
-## 🚀 Future Improvements
+## Future Improvements
 
 - Patient-level splitting to avoid leakage  
 - Integration of tumor segmentation masks  
@@ -165,9 +157,8 @@ This project highlights real-world challenges in medical imaging:
 - Standardized radiomics (e.g., PyRadiomics)  
 - Multimodal learning (PET + CT)  
 
----
 
-## 💼 Relevance for Medical Imaging Roles
+## Relevance for Medical Imaging Roles
 
 This project demonstrates:
 
@@ -176,8 +167,7 @@ This project demonstrates:
 - Ability to build and evaluate **machine learning models**  
 - Awareness of **clinical and methodological limitations**  
 
----
 
-## ✅ Final Note
+## Final Note
 
 This project focuses on building a **transparent, reproducible ML pipeline** rather than presenting misleading visual results. All limitations are explicitly acknowledged to reflect real-world medical imaging challenges.
