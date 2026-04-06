@@ -76,7 +76,7 @@ These features capture spatial intensity patterns in the image.
 
 ### Cross-Validation Performance
 
-CV Scores: [[0.8027027  0.79324324 0.80033784 0.80439189 0.80709459]
+CV Scores: [0.8027027  0.79324324 0.80033784 0.80439189 0.80709459]
 
 Mean CV: 0.802
 
