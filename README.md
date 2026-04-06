@@ -1,194 +1,131 @@
-PET Image Analysis Pipeline (Lung Cancer Dataset)
+🧠 PET Image Classification for Lung Cancer Subtypes
+📌 Project Overview
 
-📌 Overview
+This project explores lung cancer subtype classification using PET scan data. The goal is to extract meaningful radiomics-inspired features from medical images and train a machine learning model to distinguish between cancer types.
 
-In this project, I developed an end-to-end PET image analysis pipeline using a public lung cancer dataset. The goal was to simulate a realistic clinical and research environment, where imaging data is processed, validated, and analyzed to extract meaningful quantitative biomarkers.
+The pipeline demonstrates:
 
-Starting from raw DICOM images, the pipeline performs preprocessing, quality control, segmentation of high-uptake regions, and quantitative analysis of tumor characteristics. The final outputs include both visualizations and structured data that could support downstream tasks such as statistical analysis or machine learning.
-
-This project is designed to reflect workflows commonly used in oncology research and clinical trials, providing a practical demonstration of how medical imaging data can be translated into measurable insights.
-
-
-
-🗂️ Dataset
-This project uses a subset of the Lung PET-CT dataset available on Kaggle.
-https://www.kaggle.com/datasets/sshhwweettaa/lung-cancer-ct-pet-subset-dicom-format/data
-
-Image-only dataset (no annotations or clinical metadata) of DICOM images from patients diagnosed with lung cancer and includes both PET and CT modalities.
-
-Key characteristics:
-~18,500 DICOM images
-Four lung cancer types:
-Adenocarcinoma (~10,000 images)
-Small Cell Carcinoma (~3,000 images)
-Squamous Cell Carcinoma (~5,000 images)
-Large Cell Carcinoma (~500 images)
-
-Notes:
-The dataset is highly imbalanced, which affects model performance.
-Images are stored in DICOM format, commonly used in clinical workflows.
-No segmentation masks or labels at pixel level are provided.
-
-
-⚙️ Pipeline Overview
-1. Data Ingestion & Handling
-Loaded DICOM images using MONAI
-Preserved spatial structure and metadata
-Applied random sampling for efficient experimentation
-2. Preprocessing
-Intensity normalization (scaled to [0, 1])
-Channel formatting using MONAI transforms
-Resampling to a consistent resolution (simulated)
-Noise reduction via Gaussian filtering
-3. Quality Control (QC)
-
-Automated validation steps to ensure data reliability:
-Slice count verification
-Intensity distribution checks
-Detection of corrupted or low-signal scans
-
-4. Segmentation (ROI Extraction)
-Threshold-based segmentation of high-uptake regions
-Binary mask generation for lesion areas
-Overlay visualization for qualitative validation
-5. Quantitative Analysis
-
-Extraction of clinically relevant imaging biomarkers:
-
-Lesion volume (voxel-based → mL approximation)
-Mean uptake (SUV-like approximation)
-Maximum uptake
-Standard deviation (tumor heterogeneity indicator)
-
-6. Visualization
-2D slice overlays using Matplotlib
-Interactive 3D exploration with Napari
-Heatmaps highlighting metabolic activity
-
-7. Data Structuring
-Exported results to CSV format
-Created a structured dataset suitable for:
-Statistical analysis
-Machine learning workflows
-
-
-📊 Example Outputs
-Segmentation Overlay
-
-(Insert your saved image here)
-
-![Segmentation](images/segmentation.png)
-Quantitative Metrics (per scan)
-Lesion volume
-Mean uptake
-Maximum uptake
-🛠️ Technical Stack
-Python
-MONAI (medical imaging framework)
-NumPy
-Matplotlib
-Napari
-🏥 Clinical Relevance
-
-This pipeline reflects key components of PET imaging workflows commonly used in:
-
-Clinical trials
-Oncology imaging studies
-Drug development and treatment evaluation
-
-Note: Advanced steps such as attenuation correction, scatter correction, and image reconstruction are typically handled by scanner vendor software and are conceptually represented in this project.
-
-🚀 Future Improvements
-Deep learning–based segmentation (e.g., MONAI U-Net)
-Radiomics feature extraction
-Multi-modal PET/CT registration
-Automated reporting pipeline
-
-👤 Author
-Marcin Szczepański
-
-
-
-
-
-
-------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------
-Overview
-
-This project demonstrates a full pipeline for PET image analysis, including preprocessing, segmentation, quantitative analysis, and visualization. The goal is to simulate a clinical/research workflow similar to those used in PET-based clinical trials and drug development.
+Medical image preprocessing (DICOM handling)
+Feature extraction (intensity, texture, shape proxies)
+Machine learning classification
+Model evaluation using clinically relevant metrics
 
 Dataset
-Public dataset from The Cancer Imaging Archive
-Lung cancer PET/CT images (image-only subset)
-
+Source: Lung Cancer PET/CT dataset (DICOM format)
 Classes:
 Adenocarcinoma
+Squamous Cell Carcinoma
 Small Cell Carcinoma
 Large Cell Carcinoma
-Squamous Cell Carcinoma
+Total samples: ~18,500 slices
 
-Pipeline Overview
-1. Data Ingestion & Handling
-Loaded DICOM images using MONAI
-Preserved image structure and metadata
-Random sampling for efficient experimentation
+Important limitation
+The dataset does not provide tumor segmentation masks or patient IDs.
+Therefore:
+Feature extraction is performed on full images and proxy regions
+True tumor localization is not possible
+Potential data leakage may exist due to slice-level splitting
 
-2. Preprocessing
-Intensity normalization (scaled to [0,1])
-Channel formatting using MONAI transforms
-Resampling to consistent resolution (simulated)
-Noise reduction using Gaussian filtering
+⚙️ Methodology
+1. Data Loading & Preprocessing
+DICOM images loaded using pydicom
+Pixel intensities normalized to [0, 1]
+Empty or invalid images removed
 
-3. Quality Control (QC)
-Automated checks:
-Slice count validation
-Intensity distribution checks
-Basic anomaly detection for corrupted or low-signal scans
+2. Feature Extraction
+To represent each scan numerically, three groups of features were extracted:
+🟦 Intensity Features
+Mean intensity
+Standard deviation
+Maximum intensity
+10th and 90th percentiles
+🟩 Texture Features (GLCM)
+Contrast
+Homogeneity
+Energy
 
-4. Segmentation (ROI Extraction)
-Threshold-based segmentation of high-uptake regions
-Binary mask generation for lesion areas
-Overlay visualization for validation
+These capture spatial intensity patterns in the image.
 
-5. Quantitative Analysis
-Lesion volume estimation (voxel-based → mL)
-Mean and maximum uptake values (SUV-like approximation)
-Standard deviation for heterogeneity analysis
+🟨 Shape Proxy
+Approximate “high-intensity region volume” using percentile thresholding
 
-6. Visualization
-2D slice overlays using Matplotlib
-Interactive 3D visualization using Napari
-Heatmap overlays highlighting metabolic activity
+⚠️ This is a proxy feature, not true tumor segmentation.
 
-7. Data Structuring
-Results exported to CSV
-Structured dataset for downstream analysis or ML workflows
-Example Output
-PET slice with segmentation overlay
+🔹 3. Model Training
+Model: Random Forest Classifier
+Parameters:
+n_estimators=200
+class_weight="balanced"
+Validation:
+80/20 train-test split
+5-fold stratified cross-validation
 
-Quantitative metrics per image:
-Lesion volume
-Mean uptake
-Max uptake
-Technical Stack
-Python
-MONAI (medical imaging framework)
-NumPy
-Matplotlib
-Napari
-Clinical Context
 
-This pipeline reflects common steps in PET analysis workflows used in:
+📈 Results
+🔹 Cross-Validation
+CV Scores: [0.794, 0.788, 0.789, 0.801, 0.799]
+Mean CV: 0.794
 
-Clinical trials
-Oncology imaging studies
-Drug development decision-making
+🔹 Classification Report
+                         precision    recall  f1-score   support
+Adenocarcinoma              0.81      0.95      0.87      2000
+Large Cell Carcinoma        0.73      0.33      0.46       100
+Small Cell Carcinoma        0.82      0.59      0.69       600
+Squamous Cell Carcinoma     0.80      0.69      0.74      1000
 
-Advanced steps such as attenuation correction, scatter correction, and reconstruction are typically handled by scanner vendor software and are included conceptually in this project.
+accuracy                                         0.81      3700
+macro avg                  0.79      0.64      0.69
+weighted avg               0.81      0.81      0.80
 
-Future Improvements
-Deep learning–based segmentation (MONAI UNet)
-Radiomics feature extraction
-Multi-modal PET/CT registration
-Automated reporting pipeline
+
+
+📊 Visualizations
+🔹 Confusion Matrix
+
+(Insert plot from notebook here)
+
+🔹 ROC Curves
+
+(Insert ROC curve plot here)
+
+🔹 Feature Importance
+
+(Insert feature importance plot here)
+
+🔹 Sample PET Slices
+
+(Insert sample grayscale images here)
+
+Note: No ROI overlays are shown to avoid misleading interpretations.
+
+🧠 Key Insights
+The model achieves ~81% accuracy, showing that basic radiomics features contain predictive signal.
+Performance varies significantly across classes:
+Strong performance on Adenocarcinoma
+Weak performance on Large Cell Carcinoma (likely due to class imbalance)
+Texture and intensity features contribute most to model decisions.
+
+⚠️ Limitations
+This project intentionally highlights real-world challenges in medical imaging:
+❌ No tumor segmentation masks → no true ROI-based features
+❌ Slice-level splitting → potential data leakage
+❌ Class imbalance affects minority class performance
+❌ PET intensity not standardized (no SUV normalization)
+
+
+🚀 Future Improvements
+Use patient-level splitting to avoid leakage
+Incorporate true tumor segmentation masks
+Apply deep learning (CNNs / 3D models)
+Use PyRadiomics for standardized feature extraction
+Combine PET with CT (multimodal learning)
+
+💼 Relevance for Medical Imaging Roles
+This project demonstrates:
+Understanding of medical imaging pipelines
+Experience with DICOM data handling
+Ability to extract and interpret radiomics features
+Proper use of ML evaluation metrics
+Awareness of clinical and methodological limitations
+
+✅ Final Note
